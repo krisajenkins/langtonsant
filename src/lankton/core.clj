@@ -53,7 +53,14 @@
   [state]
   (move-1-step (change-direction (flip-current state))))
 
+(defn row-to-string
+  [row]
+  (apply str (map name row)))
 
+(defn board-to-string
+  [board]
+  (clojure.string/join "\n"
+                       (map row-to-string board)))
 
 (defn -main
   []
@@ -62,5 +69,5 @@
                          :position [50 50]
                          :board (vec (repeat 100
                                              (vec (repeat 100 :_))))}]
-      (pprint (nth (iterate step initial-state)
-                   10000)))))
+      (println (board-to-string (:board (nth (iterate step initial-state)
+                                             10000)))))))
