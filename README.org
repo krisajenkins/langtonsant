@@ -1,0 +1,9 @@
+* Lankton's Ant In Clojure
+
+Put together for the [[http://www.meetup.com/West-London-Hack-Night/events/204620602/][September 2014]] episode of [[http://www.meetup.com/West-London-Hack-Night/][West London Hack Night]].
+
+** Running
+
+#+BEGIN_SRC sh
+lein run
+#+END_SRC

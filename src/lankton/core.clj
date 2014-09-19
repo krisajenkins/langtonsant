@@ -1,5 +1,5 @@
 (ns lankton.core
-  (:require [clojure.pprint :refer :all]))
+  (:require [quil.core :as q]))
 
 (defn flip-current
   [state]
@@ -53,21 +53,38 @@
   [state]
   (move-1-step (change-direction (flip-current state))))
 
-(defn row-to-string
-  [row]
-  (apply str (map name row)))
+(def quil-state (atom nil))
 
-(defn board-to-string
-  [board]
-  (clojure.string/join "\n"
-                       (map row-to-string board)))
+(defn setup []
+  (q/smooth)
+  (q/frame-rate 100)
+  (q/background 200)
+  (reset! quil-state {:direction :east
+                      :position [50 50]
+                      :board (vec (repeat 100
+                                          (vec (repeat 100 :_))))}) )
+
+(defn draw []
+  (let [scale 8
+        new-state (swap! quil-state step)]
+    (doall (map-indexed (fn [rownum row]
+                          (doall (map-indexed (fn [colnum cell]
+                                                (if (= cell :_)
+                                                  (q/fill 10)
+                                                  (q/fill 255))
+                                                (q/rect (* rownum scale)
+                                                        (* colnum scale)
+                                                        scale
+                                                        scale
+                                                        ))
+                                              row)))
+                        (:board new-state)))))
 
 (defn -main
   []
-  (binding [*print-right-margin* 400]
-    (let [initial-state {:direction :east
-                         :position [50 50]
-                         :board (vec (repeat 100
-                                             (vec (repeat 100 :_))))}]
-      (println (board-to-string (:board (nth (iterate step initial-state)
-                                             10000)))))))
+  (q/defsketch lankton
+    :title "such lankton"
+    :setup setup
+    :draw draw
+    :size [800 800]))
+
