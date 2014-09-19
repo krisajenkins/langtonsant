@@ -1,4 +1,4 @@
-(ns lankton.core
+(ns langton.core
   (:require [quil.core :as q]))
 
 (defn flip-current
@@ -82,8 +82,8 @@
 
 (defn -main
   []
-  (q/defsketch lankton
-    :title "such lankton"
+  (q/defsketch langton
+    :title "such langton, very ant"
     :setup setup
     :draw draw
     :size [800 800]))
